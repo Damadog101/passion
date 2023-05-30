@@ -1,5 +1,6 @@
 import pygame
 import sys
+import time
 
 #game intentions will be to avoid the balloons coming from bottom of screen
 
@@ -32,7 +33,10 @@ class shork(pygame.sprite.Sprite):
 
         surface.blit(self.sprite, self.position)
     def moveUp(self):
-        self.position = (self.position[0], self.position[1] + 20)
+        self.velocity = (self.velocity[0], -1)
+        # time.sleep(1)
+        # self.velocity = (self.velocity[0], )
+
 
 
 
@@ -48,7 +52,7 @@ def main():
     pygame.init()
     screenSize = (1000, 700)
     window = pygame.display.set_mode(screenSize)
-    player = shork(320, 240, 0, 0, "shork.png")
+    player = shork(320, 240, 0, 1, "shork.png")
     pygame.display.set_caption('Safe Seagulls')
 
 
@@ -64,7 +68,7 @@ def main():
                     player.moveLeft()
                 elif event.key == pygame.K_d:
                     player.moveRight()
-                elif event.key == pygame.MOUSEBUTTONDOWN:
+                elif event.key == pygame.K_w:
                     player.moveUp()
         
         # Update the player sprite
