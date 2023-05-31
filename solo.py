@@ -58,8 +58,7 @@ class seagull(pygame.sprite.Sprite):
             # setting original values to v and m
             self.jump = 5
             self.mass = 1
-        while True:
-            pygame.display.set_caption('Safe Seagulls' + str(self.position))
+
 
 
 
