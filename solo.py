@@ -107,6 +107,7 @@ def main():
                 elif event.key == pygame.K_d:
                     player.moveRight()
                 elif event.key == pygame.K_SPACE:
+                    print("fall:", player.isFalling, "jump:", player.isJumping)
                     player.flap()
 
         
