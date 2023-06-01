@@ -24,6 +24,10 @@ class seagull(pygame.sprite.Sprite):
         self.sprite = pygame.image.load(image)
         self.mass = mass
         self.jump = jumpdx
+        self.isJumping = True
+        self.isFalling = False
+
+
     def update(self):
         self.position = ((self.position[0] + self.velocity[0]), (self.position[1] + self.velocity[1]))
         if self.position[0] + 200 > screenWidth:
@@ -32,69 +36,74 @@ class seagull(pygame.sprite.Sprite):
             self.velocity = (-self.velocity[0], self.velocity[1])
         if self.position[1] + 125 > screenHeight:
             self.velocity = (self.velocity[0], 0)
-            self.position = (self.position[0], self.position[1] - 10)
+            self.position = (self.position[0], self.position[1] - 10)  
 
         if self.position[1] < 0:
             self.velocity = (self.velocity[0], 0)
-            self.velocity = (self.velocity[0], self.position[1] + 10)
+            self.position = (self.position[0], self.position[1] + 10)
+
+        if self.isJumping and self.isFalling is False:
+            # self.isFalling = True
+            print("velocity Y: ", self.velocity[1])
+            self.velocity = (self.velocity[0], -1)  # how high to jump
+            # pygame.time.delay(10)
+
 
     def moveLeft(self):
         self.velocity = (-1, self.velocity[1])
+
+
     def moveRight(self):
         self.velocity = (1, self.velocity[1])
-    def moveUp(self):
-        Force = (1 / 2) * self.mass * (self.jump ** 2)
-        self.velocity = (self.velocity[0], self.velocity[1] - Force)
-        while self.jump >= 0:
-            self.jump = self.jump - 1
 
-            pygame.time.delay(10)
-        if self.jump < 0:
-            self.mass = -self.mass
-        if self.jump == -1:
+    def gravity(self):
+        if self.isJumping:
+            self.velocity = (self.velocity[0], 3)
+
+    def flap(self):
+        if self.isJumping is False:
+            self.isFalling = False
+            self.isJumping = True
+
+
+    # def moveUp(self):  
+
+    #     pass
+
+    #     # self.isJump = isJump
+
+    #     # if self.isJump:
+    #     #     Force = (1 / 2) * self.mass * (self.jump ** 2)
+    #     #     self.velocity = (self.velocity[0], self.velocity[1] - Force)
+    #     #     self.jump = self.jump - 1
+    #     # if self.jump < 0:
+    #     #     self.mass = -self.mass
+
+    #     # if self.jump == -1:
    
-  
-     
-            # setting original values to v and m
-            self.jump = 5
-            self.mass = 1
-
-
-
-
-
+    #     #     self.isJump = False
+            
+    #     #     self.jump = 5
+    #     #     self.mass = 1
+    #     # pygame.time.delay(10)
+    #     # pygame.display.update() 
 
 
 
     def draw(self, surface):
-        # width = self.sprite.get_rect().width
-        # height = self.sprite.get_rect().height
-        # self.sprite = pygame.transform.scale(self.sprite, (width/2, height/2))
-
         surface.blit(self.sprite, self.position)
 
-
-
-
-
-
-
 pygame.init()
-player = seagull(320, 240, 0, 1, "seagull.png", 1, 1)
-
-
-
-
-
-
-
-
+player = seagull(320, 240, 0, 0, "seagull.png", 1, 1)
 
 
 def main():
 
-    while True:
 
+
+
+    while True:
+        player.gravity()
 
     # Handle events
         for event in pygame.event.get():
@@ -108,12 +117,15 @@ def main():
                 elif event.key == pygame.K_d:
                     player.moveRight()
                 elif event.key == pygame.K_SPACE:
-                    player.moveUp()
+                    print(player.isFalling)
+                    print(player.isJumping)
+                    player.flap()
+
         
         # Update the player sprite
         player.update()
         
-        # Clear the window
+        # Clear the windowda
         window.fill(bgColor)
         
         # Draw the player sprite
@@ -122,9 +134,7 @@ def main():
         # Update the display
         pygame.display.update()
 
-    # pygame.display.flip()
 
-    # running = True
 
 
 
