@@ -1,5 +1,6 @@
 import pygame
 import sys
+import time
 
 #game intentions will be to avoid the balloons coming from bottom of screen
 
@@ -24,11 +25,15 @@ class seagull(pygame.sprite.Sprite):
         self.sprite = pygame.image.load(image)
         self.mass = mass
         self.jump = jumpdx
-        self.isJumping = True
-        self.isFalling = False
+        self.isJumping = False
+        self.isFalling = True
+        self.startTime = time.time()
 
 
     def update(self):
+
+        #Checks collisions on screen edges
+        # print(self.velocity) 
         self.position = ((self.position[0] + self.velocity[0]), (self.position[1] + self.velocity[1]))
         if self.position[0] + 200 > screenWidth:
             self.velocity = (-self.velocity[0], self.velocity[1])
@@ -37,16 +42,23 @@ class seagull(pygame.sprite.Sprite):
         if self.position[1] + 125 > screenHeight:
             self.velocity = (self.velocity[0], 0)
             self.position = (self.position[0], self.position[1] - 10)  
-
         if self.position[1] < 0:
             self.velocity = (self.velocity[0], 0)
             self.position = (self.position[0], self.position[1] + 10)
 
-        if self.isJumping and self.isFalling is False:
-            # self.isFalling = True
-            print("velocity Y: ", self.velocity[1])
-            self.velocity = (self.velocity[0], -1)  # how high to jump
-            # pygame.time.delay(10)
+
+
+
+        #Supposed to check jumping but no work well
+        if self.isJumping is True and self.isFalling is False:
+            self.velocity = (self.velocity[0], -4) 
+
+            if time.time() - self.startTime > 1:
+                self.isJumping = False
+                self.isFalling = True
+
+
+            
 
 
     def moveLeft(self):
@@ -57,36 +69,14 @@ class seagull(pygame.sprite.Sprite):
         self.velocity = (1, self.velocity[1])
 
     def gravity(self):
-        if self.isJumping:
+        if self.isFalling is True and self.isJumping is False:
             self.velocity = (self.velocity[0], 3)
 
+
     def flap(self):
-        if self.isJumping is False:
+        if self.isJumping is False and self.isFalling is True:
             self.isFalling = False
             self.isJumping = True
-
-
-    # def moveUp(self):  
-
-    #     pass
-
-    #     # self.isJump = isJump
-
-    #     # if self.isJump:
-    #     #     Force = (1 / 2) * self.mass * (self.jump ** 2)
-    #     #     self.velocity = (self.velocity[0], self.velocity[1] - Force)
-    #     #     self.jump = self.jump - 1
-    #     # if self.jump < 0:
-    #     #     self.mass = -self.mass
-
-    #     # if self.jump == -1:
-   
-    #     #     self.isJump = False
-            
-    #     #     self.jump = 5
-    #     #     self.mass = 1
-    #     # pygame.time.delay(10)
-    #     # pygame.display.update() 
 
 
 
@@ -117,8 +107,6 @@ def main():
                 elif event.key == pygame.K_d:
                     player.moveRight()
                 elif event.key == pygame.K_SPACE:
-                    print(player.isFalling)
-                    print(player.isJumping)
                     player.flap()
 
         
