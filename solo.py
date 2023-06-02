@@ -11,7 +11,7 @@ x = 100
 y = 100
 
 screenWidth = 1000
-screenHeight = 700
+screenHeight = 600
 window = pygame.display.set_mode((screenWidth, screenHeight))
 
 
@@ -51,9 +51,11 @@ class seagull(pygame.sprite.Sprite):
 
         #Supposed to check jumping but no work well
         if self.isJumping is True and self.isFalling is False:
-            self.velocity = (self.velocity[0], -4) 
+            self.velocity = (self.velocity[0], -1) 
+            print("code is run")
+            if time.time() - self.startTime > 2:
+                print("code is run 2", self.velocity)
 
-            if time.time() - self.startTime > 1:
                 self.isJumping = False
                 self.isFalling = True
 
@@ -70,11 +72,11 @@ class seagull(pygame.sprite.Sprite):
 
     def gravity(self):
         if self.isFalling is True and self.isJumping is False:
-            self.velocity = (self.velocity[0], 3)
+            self.velocity = (self.velocity[0], 1)
 
 
     def flap(self):
-        if self.isJumping is False and self.isFalling is True:
+        if self.isFalling is True and self.isJumping is False:
             self.isFalling = False
             self.isJumping = True
 
@@ -107,8 +109,9 @@ def main():
                 elif event.key == pygame.K_d:
                     player.moveRight()
                 elif event.key == pygame.K_SPACE:
-                    print("fall:", player.isFalling, "jump:", player.isJumping)
                     player.flap()
+                    print("fall:", player.isFalling, "jump:", player.isJumping)
+
 
         
         # Update the player sprite
