@@ -18,13 +18,11 @@ window = pygame.display.set_mode((screenWidth, screenHeight))
 
 
 class seagull(pygame.sprite.Sprite):
-    def __init__(self, x, y, dx, dy, image, mass, jumpdx):
+    def __init__(self, x, y, dx, dy, image):
         super().__init__()
         self.position = (x, y)
         self.velocity = (dx, dy) 
         self.sprite = pygame.image.load(image)
-        self.mass = mass
-        self.jump = jumpdx
         self.isJumping = False
         self.isFalling = True
         self.startTime = time.time()
@@ -52,17 +50,17 @@ class seagull(pygame.sprite.Sprite):
         #Supposed to check jumping but no work well
         if self.isJumping is True and self.isFalling is False:
             self.velocity = (self.velocity[0], -1) 
+            # self.position = ((self.position[0] + self.velocity[0]), (self.position[1] + self.velocity[1]))
+
             # print("code is run")
-            if time.time() - self.startTime > 2:
+            if time.time() - self.startTime > 1:
                 # print("code is run 2", self.velocity)
                 print("fall:", self.isFalling, "jump:", self.isJumping, "velocity", self.velocity[1])
 
                 self.isJumping = False
                 self.isFalling = True
-                # self.velocity = (self.velocity[0], 3) 
-
+                self.gravity()
                 print("fall:", self.isFalling, "jump:", self.isJumping, "velocity", self.velocity[1])
-
 
 
 
@@ -73,10 +71,12 @@ class seagull(pygame.sprite.Sprite):
         self.velocity = (-1, self.velocity[1])
 
 
+
     def moveRight(self):
         self.velocity = (1, self.velocity[1])
 
     def gravity(self):
+        # print("gravity won")
         if self.isFalling is True and self.isJumping is False:
             self.velocity = (self.velocity[0], 1)
 
@@ -92,7 +92,7 @@ class seagull(pygame.sprite.Sprite):
         surface.blit(self.sprite, self.position)
 
 pygame.init()
-player = seagull(320, 240, 0, 0, "seagull.png", 1, 1)
+player = seagull(320, 240, 0, 0, "seagull.png")
 
 
 def main():
@@ -103,7 +103,7 @@ def main():
     while True:
         player.gravity()
 
-    # Handle events
+        # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -131,6 +131,8 @@ def main():
         
         # Update the display
         pygame.display.update()
+
+
 
 
 
