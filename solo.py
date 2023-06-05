@@ -31,7 +31,6 @@ class seagull(pygame.sprite.Sprite):
     def update(self):
 
         #Checks collisions on screen edges
-        # print(self.velocity) 
         self.position = ((self.position[0] + self.velocity[0]), (self.position[1] + self.velocity[1]))
         if self.position[0] + 200 > screenWidth:
             self.velocity = (-self.velocity[0], self.velocity[1])
@@ -39,7 +38,7 @@ class seagull(pygame.sprite.Sprite):
             self.velocity = (-self.velocity[0], self.velocity[1])
         if self.position[1] + 125 > screenHeight:
             self.velocity = (self.velocity[0], 0)
-            self.position = (self.position[0], self.position[1] - 10)  
+            self.position = (self.position[0], self.position[1] - 1)  
         if self.position[1] < 0:
             self.velocity = (self.velocity[0], 0)
             self.position = (self.position[0], self.position[1] + 10)
@@ -49,12 +48,8 @@ class seagull(pygame.sprite.Sprite):
 
         #Supposed to check jumping but no work well
         if self.isJumping is True and self.isFalling is False:
-            self.velocity = (self.velocity[0], -2) 
-            # self.position = ((self.position[0] + self.velocity[0]), (self.position[1] + self.velocity[1]))
-
-            # print("code is run")
+            print(time.time() - self.startTime)
             if time.time() - self.startTime > 0.5:
-                # print("code is run 2", self.velocity)
                 print("fall:", self.isFalling, "jump:", self.isJumping, "velocity", self.velocity[1])
 
                 self.isJumping = False
@@ -95,6 +90,7 @@ pygame.init()
 player = seagull(320, 240, 0, 0, "seagull.png")
 
 
+
 def main():
 
 
@@ -117,7 +113,9 @@ def main():
                 elif event.key == pygame.K_SPACE:
                     player.flap()
                     # print("fall:", player.isFalling, "jump:", player.isJumping)
-            
+        jump = str(player.isJumping)
+        fall = str(player.isFalling)
+        pygame.display.set_caption(jump + fall)
 
 
         
@@ -132,6 +130,9 @@ def main():
         
         # Update the display
         pygame.display.update()
+
+
+
 
 
 
