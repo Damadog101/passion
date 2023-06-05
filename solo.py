@@ -49,11 +49,11 @@ class seagull(pygame.sprite.Sprite):
 
         #Supposed to check jumping but no work well
         if self.isJumping is True and self.isFalling is False:
-            self.velocity = (self.velocity[0], -1) 
+            self.velocity = (self.velocity[0], -2) 
             # self.position = ((self.position[0] + self.velocity[0]), (self.position[1] + self.velocity[1]))
 
             # print("code is run")
-            if time.time() - self.startTime > 1:
+            if time.time() - self.startTime > 0.5:
                 # print("code is run 2", self.velocity)
                 print("fall:", self.isFalling, "jump:", self.isJumping, "velocity", self.velocity[1])
 
